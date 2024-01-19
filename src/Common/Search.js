@@ -1,5 +1,7 @@
 import React from "react";
 
+
+
 const Search = ({ search, setSearch }) => {
 	return (
 		<div className="col-sm-6 mb-4">
@@ -17,5 +19,4 @@ const Search = ({ search, setSearch }) => {
 		</div>
 	);
 };
-
 export default Search;

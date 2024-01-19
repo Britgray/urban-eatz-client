@@ -1,45 +1,29 @@
-import React, {
-	useEffect,
-	useState,
-} from "react";
+import React, {useEffect,useState, useCallback} from "react";
 import axios from "axios";
-
-import {
-	Link,
-	useNavigate,
-	useParams,
-} from "react-router-dom";
+import {Link,useNavigate,useParams} from "react-router-dom";
 
 const EditClient = () => {
 	let navigate = useNavigate();
-
 	const { id } = useParams();
-
 	const [client, setClient] = useState({
 		firstName: "",
 		lastName: "",
-        nameOfBusiness:"",
+        nameOfBusiness: "",
 		email: "",
-		department: "",
+		category: "",
 	});
-	const {
-		firstName,
-		lastName,
-        nameOfBusiness,
-		email,
-		category,
-	} = client;
+	const { firstName, lastName, nameOfBusiness, email, category } = client;
 
-	useEffect(() => {
-		loadClient();
-	}, []);
-
-	const loadClient = async () => {
+	const loadClient = useCallback (async () => {
 		const result = await axios.get(
 			`http://localhost:9192/clients/client/${id}`
 		);
 		setClient(result.data);
-	};
+	},[id]);
+
+	useEffect(()=> {
+		loadClient();
+	},[loadClient]);
 
 	const handleInputChange = (e) => {
 		setClient({
@@ -51,8 +35,7 @@ const EditClient = () => {
 		e.preventDefault();
 		await axios.put(
 			`http://localhost:9192/clients/update/${id}`,
-			client
-		);
+			client);
 		navigate("/view-clients");
 	};
 
@@ -97,7 +80,7 @@ const EditClient = () => {
 					<label
 						className="input-group-text"
 						htmlFor="nameOfBusiness">
-						Last Name
+						Business Name
 					</label>
 					<input
 						className="form-control col-sm-6"

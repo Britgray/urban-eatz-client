@@ -1,37 +1,38 @@
-import React, {
-	useEffect,
-	useState,
-} from "react";
+import React, {useEffect, useState } from "react";
 import axios from "axios";
-import {
-	FaEdit,
-	FaEye,
-	FaTrashAlt,
-} from "react-icons/fa";
+import {FaEdit,FaEye,FaTrashAlt} from "react-icons/fa";
 import { Link } from "react-router-dom";
-import Search from "./Common/Search.js";
+import Search from "../../Common/Search";
 
 const ClientsView = () => {
 	const [clients, setClients] = useState([]);
 	const [search, setSearch] = useState("");
+	const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
 	useEffect(() => {
 		loadClients();
 	}, []);
 
 	const loadClients = async () => {
+		try{
 		const result = await axios.get(
 			"http://localhost:9192/clients",
-			{
-				validateStatus: () => {
-					return true;
-				},
-			}
-		);
+			{validateStatus: () => true,
+					
+		})
+	
 		if (result.status === 302) {
 			setClients(result.data);
+			setError(null);
 		}
-	};
+	}catch (error){
+		console.error("Error loading clients:", error);
+		setError("An error occurred while fetching data.");
+	}finally{
+		setLoading(false);
+	}
+};
 
 	const handleDelete = async (id) => {
 		await axios.delete(
@@ -42,10 +43,14 @@ const ClientsView = () => {
 
 	return (
 		<section>
-			<Search
-				search={search}
-				setSearch={setSearch}
-			/>
+			{loading?(
+				<p>Loading clients...</p>
+			) : error?(
+				<p>{error}</p>
+			):(
+				<>
+				
+			<Search search={search} setSearch={setSearch}/>
 			<table className="table table-bordered table-hover shadow">
 				<thead>
 					<tr className="text-center">
@@ -62,9 +67,7 @@ const ClientsView = () => {
 				<tbody className="text-center">
 					{clients
 						.filter((st) =>
-							st.firstName
-								.toLowerCase()
-								.includes(search)
+							st.firstName.toLowerCase().includes(search)
 						)
 						.map((client, index) => (
 							<tr key={client.id}>
@@ -103,6 +106,8 @@ const ClientsView = () => {
 						))}
 				</tbody>
 			</table>
+			</>
+			)}
 		</section>
 	);
 };

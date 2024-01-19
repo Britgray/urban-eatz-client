@@ -1,9 +1,7 @@
-import React, {
-	useEffect,
-	useState,
-} from "react";
+import React, {useEffect,useState} from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+
 
 const ClientPofile = () => {
 	const { id } = useParams();
@@ -18,7 +16,7 @@ const ClientPofile = () => {
 
 	useEffect(() => {
 		loadClient();
-	}, []);
+	}, [loadClient]);
 
 	const loadClient = async () => {
 		const result = await axios.get(
@@ -135,7 +133,7 @@ const ClientPofile = () => {
 
 									<div className="col-sm-9">
 										<p className="text-muted mb-0">
-											{client.department}
+											{client.category}
 										</p>
 									</div>
 								</div>
