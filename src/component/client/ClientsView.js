@@ -4,6 +4,7 @@ import {FaEdit,FaEye,FaTrashAlt} from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Search from "../../Common/Search";
 
+
 const ClientsView = () => {
 	const [clients, setClients] = useState([]);
 	const [search, setSearch] = useState("");
@@ -17,26 +18,20 @@ const ClientsView = () => {
 	const loadClients = async () => {
 		try{
 		const result = await axios.get(
-			"http://localhost:9192/clients",
-			{validateStatus: () => true,
-					
-		})
-	
-		if (result.status === 302) {
+			"http://localhost:8080/clients");
 			setClients(result.data);
 			setError(null);
-		}
 	}catch (error){
 		console.error("Error loading clients:", error);
 		setError("An error occurred while fetching data.");
 	}finally{
 		setLoading(false);
 	}
-};
-
+      
+  };
 	const handleDelete = async (id) => {
 		await axios.delete(
-			`http://localhost:9192/clients/delete/${id}`
+			`http://localhost:8080/clients/delete/${id}`
 		);
 		loadClients();
 	};

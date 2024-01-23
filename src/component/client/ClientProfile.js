@@ -1,29 +1,31 @@
-import React, {useEffect,useState} from "react";
-import { useParams } from "react-router-dom";
+import React, {useEffect, useState, useCallback } from "react";
 import axios from "axios";
+import { useParams } from "react-router-dom";
 
-
-const ClientPofile = () => {
+const ClientProfile = () => {
 	const { id } = useParams();
-
 	const [client, setClient] = useState({
 		firstName: "",
 		lastName: "",
-        nameOfBusiness:"",
+        nameOfBusiness: "",
 		email: "",
 		category: "",
 	});
+
+	const loadClient = useCallback(async () => {
+		try{
+			const result = await axios.get(`http://localhost:8080/clients/client/${id}`);
+		setClient(result.data);
+	}catch(error){
+		console.error("Error loading client:",error);
+	}
+},[id]);
 
 	useEffect(() => {
 		loadClient();
 	}, [loadClient]);
 
-	const loadClient = async () => {
-		const result = await axios.get(
-			`http://localhost:9192/clients/client/${id}`
-		);
-		setClient(result.data);
-	};
+	
 
 	return (
 		<section
@@ -67,7 +69,7 @@ const ClientPofile = () => {
 								<div className="row">
 									<div className="col-sm-3">
 										<h5 className="mb-0">
-											First Nmae
+											First Name
 										</h5>
 									</div>
 
@@ -89,7 +91,7 @@ const ClientPofile = () => {
 
 									<div className="col-sm-9">
 										<p className="text-muted mb-0">
-											{client.nameOfBusiness}
+											{client.lastName}
 										</p>
 									</div>
 								</div>
@@ -146,4 +148,4 @@ const ClientPofile = () => {
 	);
 };
 
-export default ClientPofile;
+export default ClientProfile;

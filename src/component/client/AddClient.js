@@ -27,13 +27,16 @@ const AddClient = () => {
 	};
 	const saveClient = async (e) => {
 		e.preventDefault();
+		try{
 		await axios.post(
-			"http://localhost:3000/clients",
+			"http://localhost:8080/clients",
 			client
 		);
 		navigate("/view-clients");
-	};
-
+	}catch(error){
+		console.error("Error savinf client:", error);
+	}
+};
 	return (
 		<div className="col-sm-8 py-2 px-5 offset-2 shadow">
 			<h2 className="mt-5"> Add Client</h2>
@@ -75,7 +78,7 @@ const AddClient = () => {
 					<label
 						className="input-group-text"
 						htmlFor="nameOfBusiness">
-						Bussiness name
+						Business name
 					</label>
 					<input
 						className="form-control col-sm-6"

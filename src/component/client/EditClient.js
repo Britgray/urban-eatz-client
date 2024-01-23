@@ -1,6 +1,7 @@
-import React, {useEffect,useState, useCallback} from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import {Link,useNavigate,useParams} from "react-router-dom";
+//import ClientProfile from "./component/client/ClientProfile";
 
 const EditClient = () => {
 	let navigate = useNavigate();
@@ -16,7 +17,7 @@ const EditClient = () => {
 
 	const loadClient = useCallback (async () => {
 		const result = await axios.get(
-			`http://localhost:9192/clients/client/${id}`
+			`http://localhost:8080/clients/client/${id}`
 		);
 		setClient(result.data);
 	},[id]);
@@ -34,7 +35,7 @@ const EditClient = () => {
 	const updateClient = async (e) => {
 		e.preventDefault();
 		await axios.put(
-			`http://localhost:9192/clients/update/${id}`,
+			`http://localhost:8080/clients/update/${id}`,
 			client);
 		navigate("/view-clients");
 	};

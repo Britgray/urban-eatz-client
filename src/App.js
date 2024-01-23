@@ -8,8 +8,8 @@
     Route,
   } from "react-router-dom";
   import AddClient from "./component/client/AddClient";
-  import EditClient from "./component/client/EditClient.js";
-  import ClientProfile from "./component/client/ClientProfile.js";
+  import EditClient from "./component/client/EditClient";
+  import ClientProfile from "./component/client/ClientProfile";
   
   function App() {
     return (
